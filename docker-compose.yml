@@ -1,0 +1,16 @@
+name: foxentry_api_task
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ComposerDockerfile
+    container_name: foxentry_api_task_php
+    volumes:
+      - ./src:/code/src
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    ports:
+      - "8080:8080"
+
+networks:
+  default:
+    name: foxentry_api_task_default

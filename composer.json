@@ -1,0 +1,20 @@
+{
+    "name": "vojtechrichter/foxentry_api_task",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "FoxentryApiTask\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "vojtechrichter",
+            "email": "vojta3218@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.7"
+    }
+}

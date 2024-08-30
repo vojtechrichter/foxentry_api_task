@@ -1,0 +1,25 @@
+FROM php:8-cli
+
+ARG COMPOSER_FLAGS=--prefer-dist
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV KBC_DATADIR=/code/data
+
+WORKDIR /code
+
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    --no-install-recommends && rm -r /var/lib/apt/lists/*
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer \
+    && composer global config allow-plugins.symfony/flex true \
+    && composer global require --no-progress --no-scripts --no-plugins symfony/flex
+
+COPY composer.* ./
+
+RUN composer install $COMPOSER_FLAGS
+
+EXPOSE 8080
+
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "/code/src"]
