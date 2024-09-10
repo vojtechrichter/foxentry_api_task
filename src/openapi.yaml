@@ -1,0 +1,243 @@
+openapi: 3.1.0
+info:
+  title: Title
+  description: Title
+  version: 1.0.0
+servers:
+  - url: localhost:8080
+    description: Local development server
+paths:
+  /products:
+    get:
+      description: Get all products
+      responses:
+        '200':
+          description: JSON of the products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+              example:
+                - product_id: 123
+                  name: "Banana"
+                  price: 5
+                  quantity: 74
+
+                - product_id: 97273
+                  name: "Milk"
+                  price: 39
+                  quantity: 512
+
+                - product_id: 2345
+                  name: "Garlic"
+                  price: 12
+                  quantity: 1024
+
+  /product/{id}:
+    get:
+      description: Get product
+      responses:
+        '200':
+          description: JSON object of the user
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Product'
+              example:
+                - product_id: 283947
+                  name: "Chicken breast"
+                  price: 129
+                  quantity: 267
+
+        '404':
+          description: Product was not found
+
+    delete:
+      description: Delete product
+      responses:
+        '200':
+          description: Deletes a specified product
+        '404':
+          description: Product was not found
+
+    put:
+      description: Update product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductWithoutId'
+            examples:
+             example1:
+               value:
+                name: "Keyboard"
+                price: 1500
+                quantity: 14
+
+             example2:
+               value:
+                name: "New product"
+
+             example3:
+               value:
+                price: 500
+                quantity: 2800
+      responses:
+        '200':
+          description: Updates the specified fields of the product
+        '404':
+          description: Product was not found
+
+  /product:
+    post:
+      description: Create product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductWithoutId'
+            examples:
+              example1:
+                value:
+                  name: "Chair"
+                  price: 500
+                  quantity: 200
+
+              example2:
+                value:
+                  name: "Headphones"
+                  price: 3000
+                  quantity: 27
+
+      responses:
+        '200':
+          description: Product was created
+        '409':
+          description: Product already exists, use the update endpoint
+
+  /buy/{id}:
+    post:
+      description: Buy a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyProduct'
+            example:
+              customer_id: "fds7a06gasd90"
+              quantity: 3
+
+      responses:
+        '200':
+          description: Product was bought by specified customer ID
+
+  /generate_id:
+    get:
+      description: Generate customer ID
+      responses:
+        '200':
+          description: ID was generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratedCustomerId'
+              example:
+                - customer_id: "20389467532479ad"
+
+  /purchases:
+    get:
+      description: Get all purchases
+      responses:
+        '200':
+          description: JSON of all purchases
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Purchase'
+              example:
+                - customer_id: "2308956"
+                  product_id: 2349586
+                  quantity: 97
+
+                - customer_id: "2fdas967"
+                  product_id: 235
+                  quantity: 2
+
+  /search/{name}:
+    get:
+      description: Search product by name
+      responses:
+        '200':
+          description: Found matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              example:
+                - product_id: 235
+                  name: "Notepad"
+                  price: 14
+                  quantity: 1
+
+                - product_id: 9237
+                  name: "Chewing gum"
+                  price: 23
+                  quantity: 3
+
+        '404':
+          description: Not matches were found for the specified product name
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        product_id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: integer
+        quantity:
+          type: integer
+
+    ProductWithoutId:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+        quantity:
+          type: integer
+
+    BuyProduct:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        quantity:
+          type: integer
+
+    GeneratedCustomerId:
+      type: object
+      properties:
+        customer_id:
+          type: string
+
+    Purchase:
+      type: object
+      properties:
+        customer_id:
+          type: string
+        product_id:
+          type: integer
+        quantity:
+          type: integer

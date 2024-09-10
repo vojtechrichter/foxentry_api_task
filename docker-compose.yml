@@ -1,4 +1,3 @@
-name: foxentry_api_task
 services:
   php:
     build:
@@ -10,7 +9,35 @@ services:
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     ports:
       - "8080:8080"
+    networks:
+      - default
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.0
+    container_name: elasticsearch
+    environment:
+      - ELASTIC_PASSWORD=heslo
+      - xpack.security.enabled=true
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - default
 
 networks:
   default:
-    name: foxentry_api_task_default
+    driver: bridge
+
+volumes:
+  es_data:
+    driver: local
