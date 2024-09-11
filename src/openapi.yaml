@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Title
-  description: Title
+  title: Foxentry task API specification
+  description: Description of available endpoints and their responses
   version: 1.0.0
 servers:
   - url: localhost:8080
