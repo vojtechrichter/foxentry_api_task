@@ -20,3 +20,7 @@ Now, run the containers, and the `es_data` directory will be created from the sp
 ```
 sudo chown -R 1000:1000 es_data/
 ```
+
+# Endpoints
+
+The OpenAPI specification can be found at '/api_spec' (GET) endpoint.
